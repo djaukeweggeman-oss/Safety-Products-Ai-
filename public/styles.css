@@ -1,0 +1,476 @@
+:root {
+    --bg-main: #f0f4f8;
+    --bg-sidebar: #ffffff;
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --accent: #1c3041;
+    --accent-hover: #162533;
+    --secondary-blue: #84b6e1;
+    --border: #e2e8f0;
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --msg-bot: #ffffff;
+    --msg-user: #e0e7ff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    background-color: var(--bg-main);
+    height: 100vh;
+    overflow: hidden;
+}
+
+.app-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar removed */
+.sidebar {
+    display: none;
+}
+
+.sidebar-header {
+    margin-bottom: 2rem;
+}
+
+.sidebar-logo {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.new-chat-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.new-chat-btn:hover {
+    background: var(--bg-main);
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.mascot-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.mascot-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent);
+}
+
+/* Main Content Styling */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    background: white;
+}
+
+.chat-header {
+    padding: 0.75rem 2rem;
+    border-bottom: 1px solid var(--border);
+    background: white;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.header-logo {
+    height: 42px;
+    width: auto;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+.chat-header h1 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.chat-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: thin;
+}
+
+.messages-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.mascot-intro {
+    text-align: center;
+    padding: 2rem 0;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.mascot-large {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1.5rem;
+    border: 4px solid white;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.mascot-intro h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.mascot-intro.fade-out {
+    opacity: 0;
+    max-height: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.message {
+    display: flex;
+    gap: 1rem;
+    line-height: 1.6;
+    align-items: flex-start;
+}
+
+.bot-message {
+    background-color: transparent;
+}
+
+.user-message {
+    flex-direction: row-reverse;
+}
+
+/* ─── Avatar / Nile ─────────────────────────────────────────────── */
+
+.avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+    flex-shrink: 0;
+    overflow: hidden;
+    background: var(--bg-main);
+    position: relative;
+    border: 2px solid var(--border);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+    transition: border-color 0.4s ease;
+}
+
+/* Container that stacks the two frames on top of each other */
+.nile-layers {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.avatar img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Closed mouth: always the bottom layer */
+.avatar img.mouth-closed {
+    opacity: 1;
+    z-index: 1;
+}
+
+/* Open mouth: hidden by default, sits on top */
+.avatar img.mouth-open {
+    opacity: 0;
+    z-index: 2;
+}
+
+/*
+  ── Irregular speech animation ──────────────────────────────────
+  Two overlapping animations at prime-number timings (0.37s + 0.61s)
+  create a beat pattern that never repeats exactly, giving the
+  natural, irregular rhythm of real speech.
+*/
+.avatar.is-talking img.mouth-open {
+    animation:
+        mouthBeat1 0.37s ease-in-out infinite,
+        mouthBeat2 0.61s ease-in-out infinite alternate;
+}
+
+/* mouth-closed has NO animation — stays at opacity 1 always as base layer */
+
+@keyframes mouthBeat1 {
+
+    0%,
+    100% {
+        opacity: 0;
+    }
+
+    40%,
+    60% {
+        opacity: 0.7;
+    }
+}
+
+@keyframes mouthBeat2 {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+
+/* Head bobs on a different slow cycle so it's not in sync with mouth */
+.avatar.is-talking {
+    border-color: var(--secondary-blue);
+    animation: nileHeadBob 2.3s ease-in-out infinite;
+}
+
+/* Blink: disabled — the bar doesn't look right over the photo */
+.avatar::after {
+    content: none;
+}
+
+/* ── First-message entrance zoom ───────────────────────────────── */
+.avatar.walking-closer {
+    animation: nileEntrance 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes nileHeadBob {
+
+    0%,
+    100% {
+        transform: rotate(0deg) translateY(0);
+    }
+
+    30% {
+        transform: rotate(1.5deg) translateY(-1px);
+    }
+
+    70% {
+        transform: rotate(-0.8deg) translateY(1px);
+    }
+}
+
+@keyframes nileEntrance {
+    0% {
+        transform: scale(0.6) translateY(20px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ─── User placeholder avatar ────────────────────────────────── */
+.user-placeholder {
+    width: 100%;
+    height: 100%;
+    background: var(--accent);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+/* ─── Message content bubble ─────────────────────────────────── */
+.content {
+    max-width: 85%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+}
+
+.bot-message .content {
+    background: var(--msg-bot);
+    color: var(--text-primary);
+}
+
+.user-message .content {
+    background: var(--secondary-blue);
+    color: white;
+}
+
+/* ─── Input Area ─────────────────────────────────────────────── */
+.input-area {
+    padding: 1.5rem 2rem 2.5rem;
+    background: white;
+    position: relative;
+}
+
+.input-container-with-mascot {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+}
+
+.input-wrapper {
+    flex: 1;
+    position: relative;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: flex-end;
+    box-shadow: var(--shadow);
+    transition: all 0.2s;
+}
+
+.input-wrapper:focus-within {
+    border-color: var(--accent);
+}
+
+textarea {
+    flex: 1;
+    border: none;
+    outline: none;
+    resize: none;
+    font-family: inherit;
+    font-size: 1rem;
+    max-height: 200px;
+    padding-right: 2.5rem;
+}
+
+#send-button {
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 0.4rem;
+    padding: 0.3rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#send-button:hover {
+    background: var(--accent-hover);
+}
+
+#send-button svg {
+    width: 20px;
+    height: 20px;
+}
+
+.disclaimer {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 1rem;
+}
+
+.disclaimer a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+/* ─── Typing Indicator ───────────────────────────────────────── */
+.typing {
+    display: flex;
+    gap: 0.3rem;
+    padding: 1rem;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    background: var(--text-secondary);
+    border-radius: 50%;
+    animation: bounce 1.4s infinite ease-in-out;
+}
+
+.dot:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.dot:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+
+    0%,
+    80%,
+    100% {
+        transform: scale(0);
+    }
+
+    40% {
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+}

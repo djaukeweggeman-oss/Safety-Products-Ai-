@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safety Products | AI Chatbot</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Main Chat Area -->
+        <main class="main-content">
+            <header class="chat-header">
+                <div class="header-content">
+                    <img src="logo.jpg" alt="Safety Products Logo" class="header-logo">
+                    <h1>Safety Products AI</h1>
+                </div>
+            </header>
+
+            <div class="chat-container">
+                <div id="chat-messages" class="messages-list">
+                    <!-- Nile is introduced here -->
+                    <div class="mascot-intro">
+                        <img src="nile.jpg" alt="Mascotte Niles" class="mascot-large">
+                        <h2>Ik ben Niles, hoe kan ik je helpen?</h2>
+                    </div>
+
+                    <!-- Welcome Message -->
+                    <div class="message bot-message">
+                        <div class="avatar">
+                            <div class="nile-layers">
+                                <img src="nile_closed.png" class="mouth-closed" alt="Niles">
+                                <img src="nile_open.png" class="mouth-open" alt="Niles">
+                            </div>
+                        </div>
+                        <div class="content">
+                            Hallo! Ik ben Niles, de mascotte van Safety Products. Hoe kan ik je vandaag helpen met je
+                            vragen over veiligheid en onze producten?
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <footer class="input-area">
+                <div class="input-container-with-mascot">
+                    <div class="input-wrapper">
+                        <textarea id="user-input" placeholder="Stel je vraag hier..." rows="1"></textarea>
+                        <button id="send-button" title="Verstuur bericht">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <p class="disclaimer">Vragen over levering of specifieke orders? <a
+                        href="mailto:info@safetyproducts.com">Mail ons direct</a>.</p>
+            </footer>
+        </main>
+    </div>
+    <script src="chat.js"></script>
+</body>
+
+</html>
