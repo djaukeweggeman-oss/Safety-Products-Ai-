@@ -186,4 +186,11 @@ document.addEventListener('DOMContentLoaded', () => {
             sendMessage();
         }
     });
+
+    // ── Mobile Focus Fix ──────────────────────────────────────────
+    userInput.addEventListener('focus', () => {
+        setTimeout(() => {
+            userInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
+    });
 });
