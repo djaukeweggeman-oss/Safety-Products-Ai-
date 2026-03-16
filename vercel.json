@@ -1,26 +1,13 @@
 {
     "version": 2,
-    "builds": [
-        {
-            "src": "server/server.js",
-            "use": "@vercel/node"
-        },
-        {
-            "src": "public/**",
-            "use": "@vercel/static"
-        }
-    ],
     "rewrites": [
         {
             "source": "/chat",
-            "destination": "server/server.js"
+            "destination": "/api/chat"
         },
         {
             "source": "/(.*)",
-            "destination": "public/$1"
+            "destination": "/public/$1"
         }
-    ],
-    "env": {
-        "NODE_ENV": "production"
-    }
+    ]
 }
