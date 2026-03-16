@@ -193,4 +193,12 @@ document.addEventListener('DOMContentLoaded', () => {
             userInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }, 300);
     });
+
+    // ── Visual Viewport Fix (Mobile Keyboard) ──────────────────────
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', () => {
+            document.body.style.height = window.visualViewport.height + 'px';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+    }
 });
