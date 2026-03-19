@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const { openai } = require('../openai');
-const systemPrompt = require('../systemPrompt');
+const getSystemPrompt = require('../systemPrompt');
+const { getRelevantProducts } = require('../retriever');
 
 /**
  * POST /chat
  * Streams the AI response token-by-token using Server-Sent Events (SSE).
- * The client receives chunks immediately as OpenAI generates them.
  */
 router.post('/', async (req, res) => {
     const { message } = req.body;
@@ -15,19 +15,22 @@ router.post('/', async (req, res) => {
         return res.status(400).json({ error: 'Bericht is verplicht' });
     }
 
+    // RAG: Zoek relevante producten op basis van het bericht van de gebruiker
+    const relevantProducts = getRelevantProducts(message);
+    const systemPromptContent = getSystemPrompt(relevantProducts);
+
     // Set SSE headers so the browser can read the stream progressively
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
 
-    // Optional: for older express versions or specific middlewares
     if (res.flushHeaders) res.flushHeaders();
 
     try {
         const stream = await openai.chat.completions.create({
             model: 'gpt-4o-mini',
             messages: [
-                { role: 'system', content: systemPrompt },
+                { role: 'system', content: systemPromptContent },
                 { role: 'user', content: message }
             ],
             temperature: 0.7,
