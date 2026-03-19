@@ -1,10 +1,8 @@
 const { openai } = require('../server/openai');
-const systemPrompt = require('../server/systemPrompt');
+const getSystemPrompt = require('../server/systemPrompt');
+const { getRelevantProducts } = require('../server/retriever');
 
 module.exports = async (req, res) => {
-    // Vercel serverless functions handle CORS and body parsing differently if not using Express
-    // But we can just use the standard req/res. 
-
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
@@ -15,6 +13,10 @@ module.exports = async (req, res) => {
         return res.status(400).json({ error: 'Bericht is verplicht' });
     }
 
+    // RAG: Zoek relevante producten
+    const relevantProducts = getRelevantProducts(message);
+    const systemPromptContent = getSystemPrompt(relevantProducts);
+
     // Set SSE headers
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
@@ -24,7 +26,7 @@ module.exports = async (req, res) => {
         const stream = await openai.chat.completions.create({
             model: 'gpt-4o-mini',
             messages: [
-                { role: 'system', content: systemPrompt },
+                { role: 'system', content: systemPromptContent },
                 { role: 'user', content: message }
             ],
             temperature: 0.7,
